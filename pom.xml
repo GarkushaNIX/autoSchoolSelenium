@@ -24,9 +24,21 @@
         <compiler.version>1.8</compiler.version>
         <aspectj.version>1.8.10</aspectj.version>
         <allure.junit.version>2.0-BETA21</allure.junit.version>
+        <htmlelements.version>2.0-RC13</htmlelements.version>
+        <allure.testng.version>2.7.0</allure.testng.version>
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>io.qameta.allure</groupId>
+            <artifactId>allure-testng</artifactId>
+            <version>${allure.testng.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.qameta.htmlelements</groupId>
+            <artifactId>htmlelements</artifactId>
+            <version>${htmlelements.version}</version>
+        </dependency>
         <dependency>
             <groupId>io.qameta.allure</groupId>
             <artifactId>allure-junit4</artifactId>

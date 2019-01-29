@@ -1,13 +1,16 @@
+import blocks.SearchResult;
 import io.qameta.allure.Feature;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.PageFactory;
+import pages.BasePage;
+import pages.Cart;
 
 import java.util.Arrays;
 import java.util.List;
@@ -48,23 +51,17 @@ public class UIAmazonTest {
 
         driver.get("https://www.amazon.com");
 
-        WebElement searchField = driver.findElement(By.id("twotabsearchtextbox"));
-        WebElement goButton = driver.findElement(By.xpath("//input[@value='Go']"));
-        WebElement searchDropdownButton = driver.findElement(By.xpath("id('nav-search')//div[@class='nav-left']"));
-        WebElement categorySearchDropdownOption =
-                driver.findElement(By.xpath("id('searchDropdownBox')//option[contains(text(),'" + category + "')]"));
+        BasePage page = PageFactory.initElements(driver, BasePage.class);
 
-        searchDropdownButton.click();
-        categorySearchDropdownOption.click();
-        searchField.sendKeys(searchEntry);
-        goButton.click();
+        page.changeSearchCategory();
+        page.searchForRequest(searchEntry);
 
         //Check that we are on the correct page
         assertThat("This is " + driver.getTitle() + " page, while we were searching for " + searchEntry,
                 driver.getTitle().contains(searchEntry));
 
-        List<WebElement> resultsList =
-                driver.findElements(By.xpath("id('s-results-list-atf')//li[contains(@id,'result')]"));
+        //Save list of results and delete sponsored content
+        List<SearchResult> resultsList = page.getListOfResults();
         resultsList.removeIf(result -> result.getAttribute("class").contains("AdHolder"));
 
         //Check that all elements match the search word
@@ -74,26 +71,25 @@ public class UIAmazonTest {
         }
 
         //Save name and price of the first product
-        String firstItemName = driver.findElement(By.xpath("id('s-results-list-atf')//li[contains(@id,'result')]")).
-                findElement(By.xpath("//h2")).getText();
-        String firstItemPrice = driver.findElement(By.xpath("id('s-results-list-atf')//li[contains(@id,'result')]"))
-                .findElement(By.xpath("//span[@class='sx-price sx-price-large']"))
+        String firstResultName = page.getFirstResult().productName().getText();
+        String firstResultPrice = page.getFirstResult().productPrice()
                 .getText().replaceAll("\\D", "");
 
         //Open product page and add it to cart
-        driver.findElement(By.xpath("id('s-results-list-atf')//li[contains(@id,'result')]")).
-                findElement(By.xpath("//h2")).click();
-        driver.findElement(By.id("add-to-cart-button")).click();
+        page.getFirstResult().productName().click();
+        page.addToCartClick();
 
         //Open cart and compare displayed name and price of the product with saved
-        driver.findElement(By.id("nav-cart")).click();
-        String inCartName = driver.findElement(By.xpath("id('activeCartViewForm')//span[contains(@class,'sc-product-title')]")).getText();
-        String inCartPrice = driver.findElement(By.xpath("id('gutterCartViewForm')//span[contains(@class,'sc-price')]"))
-                .getText().replaceAll("\\D", "");
+        page.goToCart();
 
-        assertThat("Different name. Expected " + firstItemName + " but was " + inCartName, inCartName.equals(firstItemName));
-        assertThat("Different price. Expected " + firstItemPrice + " but was " + inCartPrice,
-                inCartPrice.equals(firstItemPrice));
+        Cart cart = PageFactory.initElements(driver, Cart.class);
+
+        String inCartName = cart.getProductName().getText();
+        String inCartPrice = cart.getProductPrice().getText().replaceAll("\\D", "");
+
+        assertThat("Different name. Expected " + firstResultName + " but was " + inCartName, inCartName.equals(firstResultName));
+        assertThat("Different price. Expected " + firstResultPrice + " but was " + inCartPrice,
+                inCartPrice.equals(firstResultPrice));
     }
 
 }
