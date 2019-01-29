@@ -1,7 +1,6 @@
 package blocks;
 
 import io.qameta.htmlelements.annotation.FindBy;
-import io.qameta.htmlelements.annotation.Param;
 import io.qameta.htmlelements.element.ExtendedWebElement;
 import io.qameta.htmlelements.element.HtmlElement;
 
