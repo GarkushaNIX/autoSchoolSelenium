@@ -10,20 +10,22 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class CartPageSteps {
     private WebDriver driver;
 
-    public CartPageSteps(WebDriver driver) {
+    CartPageSteps(WebDriver driver) {
         this.driver = driver;
     }
 
     @Step
-    public void checkProductName(String name) {
+    public CartPageSteps checkProductName(String name) {
         String inCartName = onCartPage().productName().getText();
         assertThat("Different name. Expected " + name + " but was " + inCartName, inCartName.equals(name));
+        return this;
     }
 
     @Step
-    public void checkProductPrice(String price) {
+    public CartPageSteps checkProductPrice(String price) {
         String inCartPrice = onCartPage().productPrice().getText().replaceAll("\\D", "");
         assertThat("Different price. Expected " + price + " but was " + inCartPrice, inCartPrice.equals(price));
+        return this;
     }
 
 

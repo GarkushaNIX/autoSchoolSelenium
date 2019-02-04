@@ -25,29 +25,27 @@ public class UIAmazonTest extends BaseTest {
     }
 
     @Test
-    public void testAmazon() {
+    public void testCartNameAndPrice() {
 
-        super.driver.get("https://www.amazon.com");
+        driver.get("https://www.amazon.com");
 
         BasePageSteps basePageSteps = new BasePageSteps(driver);
-        basePageSteps.changeSearchCategory(testCategory);
-        basePageSteps.searchForRequest(searchEntry);
-        basePageSteps.checkPageTitle(searchEntry);
-        basePageSteps.checkSearchResults(searchEntry);
+
+        basePageSteps
+                .changeSearchCategory(testCategory)
+                .searchForRequest(searchEntry)
+                .checkPageTitle(searchEntry)
+                .checkSearchResults(searchEntry);
 
         //Save name and price of the first product
         String firstResultName = basePageSteps.getFirstProductName();
         String firstResultPrice = basePageSteps.getFirstProductPrice();
 
-        //Open product page and add it to cart
-        basePageSteps.addFirstProductToCart();
-
-        //Open cart and compare displayed name and price of the product with saved
-        basePageSteps.goToCartPage();
-
-        CartPageSteps cartPageSteps = new CartPageSteps(driver);
-        cartPageSteps.checkProductName(firstResultName);
-        cartPageSteps.checkProductPrice(firstResultPrice);
+        basePageSteps
+                .addFirstProductToCart()
+                .goToCartPage()
+                .checkProductName(firstResultName)
+                .checkProductPrice(firstResultPrice);
     }
 
 }

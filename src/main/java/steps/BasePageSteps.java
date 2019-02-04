@@ -19,30 +19,34 @@ public class BasePageSteps {
     }
 
     @Step
-    public void changeSearchCategory(String category) {
+    public BasePageSteps changeSearchCategory(String category) {
         onBasePage().categoryDropdownArrow().click();
         onBasePage().categoryDropdownOption(category).click();
+        return this;
     }
 
     @Step
-    public void searchForRequest(String request) {
+    public BasePageSteps searchForRequest(String request) {
         onBasePage().inputField().sendKeys(request);
         onBasePage().searchButton().click();
+        return this;
     }
 
     @Step
-    public void checkPageTitle(String request) {
+    public BasePageSteps checkPageTitle(String request) {
         assertThat("This is " + driver.getTitle() + " page, while we were searching for " + request,
                 driver.getTitle().contains(request));
+        return this;
     }
 
     @Step
-    public void checkSearchResults(String request) {
+    public BasePageSteps checkSearchResults(String request) {
         List<SearchResult> list = onBasePage().searchResultList();
         for (WebElement result : list) {
             assertThat("Item \n " + result.getText() + "\ndoes not contain search word",
                     result.getText().contains(request));
         }
+        return this;
     }
 
     @Step
@@ -57,14 +61,16 @@ public class BasePageSteps {
     }
 
     @Step
-    public void addFirstProductToCart() {
+    public BasePageSteps addFirstProductToCart() {
         onBasePage().searchResultFirst().productName().click();
         onBasePage().addToCartButton().click();
+        return this;
     }
 
     @Step
-    public void goToCartPage() {
+    public CartPageSteps goToCartPage() {
         onBasePage().cartButton().click();
+        return new CartPageSteps(driver);
     }
 
     private BasePage onBasePage() {
