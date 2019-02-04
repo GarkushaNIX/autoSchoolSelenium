@@ -1,12 +1,9 @@
 import baseTest.BaseTest;
 import io.qameta.allure.Feature;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import steps.BasePageSteps;
 import steps.CartPageSteps;
 
