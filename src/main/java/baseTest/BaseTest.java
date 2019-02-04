@@ -6,7 +6,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 public class BaseTest {
-    private WebDriver driver;
+    protected WebDriver driver;
 
     @Before
     public void setup() {

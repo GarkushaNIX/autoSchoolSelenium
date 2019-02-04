@@ -3,7 +3,6 @@ import io.qameta.allure.Feature;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import org.openqa.selenium.WebDriver;
 import steps.BasePageSteps;
 import steps.CartPageSteps;
 
@@ -13,7 +12,6 @@ import java.util.Arrays;
 @RunWith(Parameterized.class)
 public class UIAmazonTest extends BaseTest {
 
-    private WebDriver driver;
     private String searchEntry;
     private String testCategory = "Books";
 
@@ -29,7 +27,7 @@ public class UIAmazonTest extends BaseTest {
     @Test
     public void testAmazon() {
 
-        driver.get("https://www.amazon.com");
+        super.driver.get("https://www.amazon.com");
 
         BasePageSteps basePageSteps = new BasePageSteps(driver);
         basePageSteps.changeSearchCategory(testCategory);
