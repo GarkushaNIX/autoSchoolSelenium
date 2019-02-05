@@ -5,6 +5,8 @@ import io.qameta.htmlelements.WebPageFactory;
 import org.openqa.selenium.WebDriver;
 import pages.CartPage;
 
+import static baseTest.matchers.WebElementMatchers.isDisplayed;
+import static baseTest.matchers.WebElementMatchers.hasText;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 public class CartPageSteps {
@@ -16,8 +18,7 @@ public class CartPageSteps {
 
     @Step
     public CartPageSteps checkProductName(String name) {
-        String inCartName = onCartPage().productName().getText();
-        assertThat("Different name. Expected " + name + " but was " + inCartName, inCartName.equals(name));
+        assertThat(onCartPage().productName().should(isDisplayed()), hasText(name));
         return this;
     }
 

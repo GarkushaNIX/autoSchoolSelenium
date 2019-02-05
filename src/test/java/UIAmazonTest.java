@@ -4,7 +4,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import steps.BasePageSteps;
-import steps.CartPageSteps;
 
 import java.util.Arrays;
 
