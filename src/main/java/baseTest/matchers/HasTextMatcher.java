@@ -8,18 +8,16 @@ import org.openqa.selenium.WebElement;
 
 import java.util.concurrent.TimeUnit;
 
-import static org.hamcrest.Matchers.is;
-
 public class HasTextMatcher extends TypeSafeMatcher<WebElement> {
 
     private int timeout = 10;
-    private Matcher<String> textMatcher;
+    private String textMatcher;
 
-    public HasTextMatcher(Matcher<String> textMatcher) {
+    public HasTextMatcher(String textMatcher) {
         this.textMatcher = textMatcher;
     }
 
-    public HasTextMatcher(Matcher<String> textMatcher, int timeout) {
+    public HasTextMatcher(String textMatcher, int timeout) {
         this.textMatcher = textMatcher;
         this.timeout = timeout;
     }
@@ -30,7 +28,7 @@ public class HasTextMatcher extends TypeSafeMatcher<WebElement> {
         boolean matched = false;
         while (System.currentTimeMillis() <= waitUntil && !matched) {
             try {
-                matched = textMatcher.matches(item.getText());
+                matched = item.getText().contains(textMatcher);
                 Thread.sleep(250);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -41,7 +39,7 @@ public class HasTextMatcher extends TypeSafeMatcher<WebElement> {
 
     @Override
     public void describeTo(Description description) {
-        description.appendText("collection size is").appendDescriptionOf(textMatcher);
+        description.appendText("element text ").appendText(textMatcher);
     }
 
     @Override
@@ -51,18 +49,13 @@ public class HasTextMatcher extends TypeSafeMatcher<WebElement> {
     }
 
     @Factory
-    public static Matcher<WebElement> hasText(final Matcher<String> textMatcher) {
+    public static Matcher<WebElement> hasText(final String textMatcher) {
         return new HasTextMatcher(textMatcher);
     }
 
     @Factory
-    public static Matcher<WebElement> hasText(final String text) {
-        return new HasTextMatcher(is(text));
-    }
-
-    @Factory
-    public static Matcher<WebElement> hasText(final String text, int timeout) {
-        return new HasTextMatcher(is(text), timeout);
+    public static Matcher<WebElement> hasText(final String textMatcher, int timeout) {
+        return new HasTextMatcher(textMatcher, timeout);
     }
 
 }
